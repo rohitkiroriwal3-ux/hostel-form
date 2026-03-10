@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Thar Boys Hostel Admission</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f6f9;
+padding:20px;
+}
+
+.form-box{
+background:white;
+width:800px;
+margin:auto;
+padding:30px;
+border:1px solid #ccc;
+}
+
+/* header */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.hostel-title{
+text-align:center;
+flex:1;
+}
+
+.hostel-title h1{
+margin:0;
+}
+
+.photo-box{
+width:120px;
+height:140px;
+border:1px solid #999;
+text-align:center;
+font-size:12px;
+overflow:hidden;
+}
+
+.photo-box img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* form fields */
+
+.row{
+margin-bottom:10px;
+}
+
+label{
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:6px;
+border:1px solid #aaa;
+border-radius:3px;
+}
+
+/* grid layout */
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+/* aadhar */
+
+.aadhar-section{
+margin-top:10px;
+display:flex;
+gap:10px;
+}
+
+.aadhar-section img{
+width:250px;
+height:150px;
+border:1px solid #999;
+object-fit:cover;
+}
+
+/* signature */
+
+.signature{
+margin-top:40px;
+display:flex;
+justify-content:space-between;
+}
+
+.signature div{
+text-align:center;
+width:200px;
+}
+
+/* hide file inputs in PDF */
+
+.pdf-mode input[type="file"]{
+display:none;
+}
+
+button{
+margin-top:20px;
+padding:12px;
+width:200px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="form-box" id="formArea">
+
+<div class="header">
+
+<div class="hostel-title">
+<h1>Thar Boys Hostel</h1>
+<h3>Suratgarh</h3>
+</div>
+
+<div class="photo-box">
+<input type="file" onchange="previewImage(event,'photoPreview')">
+<img id="photoPreview">
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="row">
+<label>Name</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Date</label>
+<input type="date">
+</div>
+
+<div class="row">
+<label>Father Name</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Mother Name</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Mobile Number</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Room Number</label>
+<input type="text">
+</div>
+
+</div>
+
+<div class="row">
+<label>Address</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Aadhar Number</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Police Verification Number</label>
+<input type="text">
+</div>
+
+<div class="row">
+<label>Fees</label>
+<input type="text">
+</div>
+
+<h3>Aadhar Card</h3>
+
+<div class="aadhar-section">
+
+<div>
+<input type="file" onchange="previewImage(event,'aadharFront')">
+<img id="aadharFront">
+<p>Aadhar Front</p>
+</div>
+
+<div>
+<input type="file" onchange="previewImage(event,'aadharBack')">
+<img id="aadharBack">
+<p>Aadhar Back</p>
+</div>
+
+</div>
+
+<div class="signature">
+
+<div>
+<br><br>
+-----------------------<br>
+Student Signature
+</div>
+
+<div>
+<br><br>
+-----------------------<br>
+Hostel Owner Signature
+</div>
+
+</div>
+
+</div>
+
+<center>
+<button onclick="savePDF()">Download PDF</button>
+</center>
+
+<script>
+
+function previewImage(event,id){
+
+let reader = new FileReader();
+
+reader.onload = function(){
+document.getElementById(id).src = reader.result;
+}
+
+reader.readAsDataURL(event.target.files[0]);
+
+}
+
+function savePDF(){
+
+const { jsPDF } = window.jspdf;
+
+let form = document.getElementById("formArea");
+
+form.classList.add("pdf-mode");
+
+html2canvas(form,{
+scale:3
+}).then(canvas => {
+
+const imgData = canvas.toDataURL("image/png");
+
+const pdf = new jsPDF('p','mm','a4');
+
+pdf.addImage(imgData,'PNG',0,0,210,297);
+
+pdf.save("hostel_admission.pdf");
+
+form.classList.remove("pdf-mode");
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
