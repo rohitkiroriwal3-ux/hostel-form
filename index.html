@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -6,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
@@ -18,13 +20,12 @@ padding:20px;
 
 .form-box{
 background:white;
-width:800px;
+max-width:800px;
+width:100%;
 margin:auto;
 padding:30px;
 border:1px solid #ccc;
 }
-
-/* header */
 
 .header{
 display:flex;
@@ -57,8 +58,6 @@ height:100%;
 object-fit:cover;
 }
 
-/* form fields */
-
 .row{
 margin-bottom:10px;
 }
@@ -74,20 +73,17 @@ border:1px solid #aaa;
 border-radius:3px;
 }
 
-/* grid layout */
-
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:10px;
 }
 
-/* aadhar */
-
 .aadhar-section{
 margin-top:10px;
 display:flex;
 gap:10px;
+flex-wrap:wrap;
 }
 
 .aadhar-section img{
@@ -96,8 +92,6 @@ height:150px;
 border:1px solid #999;
 object-fit:cover;
 }
-
-/* signature */
 
 .signature{
 margin-top:40px;
@@ -109,8 +103,6 @@ justify-content:space-between;
 text-align:center;
 width:200px;
 }
-
-/* hide file inputs in PDF */
 
 .pdf-mode input[type="file"]{
 display:none;
@@ -128,6 +120,7 @@ cursor:pointer;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -152,7 +145,7 @@ cursor:pointer;
 
 <div class="row">
 <label>Name</label>
-<input type="text">
+<input type="text" id="studentName">
 </div>
 
 <div class="row">
@@ -274,11 +267,17 @@ const pdf = new jsPDF('p','mm','a4');
 
 pdf.addImage(imgData,'PNG',0,0,210,297);
 
-let filename = prompt("PDF ka naam kya rakhna hai?", "student_admission");
+/* auto filename from student name */
 
-if(filename){
-pdf.save(filename + ".pdf");
+let studentName = document.getElementById("studentName").value;
+
+if(studentName.trim() === ""){
+studentName = "student_admission";
 }
+
+studentName = studentName.replace(/\s+/g,"_");
+
+pdf.save(studentName + "_Admission.pdf");
 
 form.classList.remove("pdf-mode");
 
