@@ -274,7 +274,11 @@ const pdf = new jsPDF('p','mm','a4');
 
 pdf.addImage(imgData,'PNG',0,0,210,297);
 
-pdf.save("hostel_admission.pdf");
+let filename = prompt("PDF ka naam kya rakhna hai?", "student_admission");
+
+if(filename){
+pdf.save(filename + ".pdf");
+}
 
 form.classList.remove("pdf-mode");
 
