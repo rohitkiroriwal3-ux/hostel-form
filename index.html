@@ -283,13 +283,16 @@ function savePDF(){
 const { jsPDF } = window.jspdf;
 
 let form = document.getElementById("formArea");
-
 let terms = document.getElementById("termsPage");
 
 form.classList.add("pdf-mode");
 
-
-html2canvas(form,{scale:4}).then(canvas => {
+html2canvas(form,{
+scale:4,
+useCORS:true,
+windowWidth:1200,
+width:800
+}).then(canvas => {
 
 const pdf = new jsPDF('p','mm','a4');
 
@@ -297,19 +300,22 @@ const imgData = canvas.toDataURL("image/png");
 
 pdf.addImage(imgData,'PNG',0,0,210,297);
 
-
 /* PAGE 2 */
 
 terms.style.display="block";
 
-html2canvas(terms,{scale:4}).then(canvas2=>{
+html2canvas(terms,{
+scale:4,
+useCORS:true,
+windowWidth:1200,
+width:800
+}).then(canvas2=>{
 
 const imgData2 = canvas2.toDataURL("image/png");
 
 pdf.addPage();
 
 pdf.addImage(imgData2,'PNG',0,0,210,297);
-
 
 /* filename */
 
