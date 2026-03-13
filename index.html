@@ -39,16 +39,10 @@ text-align:center;
 flex:1;
 }
 
-.hostel-title h1{
-margin:0;
-}
-
 .photo-box{
 width:120px;
 height:140px;
 border:1px solid #999;
-text-align:center;
-font-size:12px;
 overflow:hidden;
 }
 
@@ -231,6 +225,40 @@ Hostel Owner Signature
 
 </div>
 
+<!-- TERMS PAGE -->
+
+<div id="termsPage" style="display:none;background:white;width:800px;padding:40px">
+
+<h2 style="text-align:center">छात्रावास के नियम एवं शर्तें</h2>
+
+<p>01 पी जी में एडमिशन फार्म के लिए कोई दो आई डी प्रूफ देने होंगे।</p>
+<p>02 पी जी में आने व जाने की रजिस्टर में एंट्री करनी होगी।</p>
+<p>03 अपने कमरे की सफाई खुद को ही करनी होगी व कचरा कचरा पात्र में ही डालें।</p>
+<p>04 भोजन करने के बाद बर्तन खुद को ही साफ करने होंगे।</p>
+<p>05 नहाने के बाद बाथरूम को वाइपर से साफ करें व शैम्पू पाउच या बाल न रहने दें।</p>
+<p>06 पी जी में छात्र से मुलाकात कार्यालय में ही सम्भव हो सकेगी।</p>
+<p>07 पी जी की फीस प्रवेश होते ही जमा करवानी होगी।</p>
+<p>08 यदि कोई छात्र प्रवेश के बाद पीजी छोड़ देता है, तो 7 दिनों के लिए अधिकतम ₹300 प्रति दिन का शुल्क लिया जाएगा। 7 दिनों के बाद, पूरे महीने का शुल्क लिया जाएगा।</p>
+<p>09 प्रत्येक कमरे के साइज अनुसार उसमें 2 से 4 छात्र रह सकेंगे।</p>
+<p>10 प्रत्येक छात्र को सिंगल बेड चारपाई उपलब्ध करवायी जायेगी।</p>
+<p>11 प्रत्येक कमरे में एक पंखा व एक ट्यूब लाइट के अतिरिक्त कोई भी उपकरण प्रयोग में लाना मना है।</p>
+<p>12 गर्म पानी का समय सुबह 07 बजे से 10 बजे तक रहेगा।</p>
+<p>13 छात्र के माता पिता या सगे भाई बहन वार्डन की अनुमति से ही मिल सकेंगे।</p>
+<p>14 हॉस्टल फीस में चिकित्सा सम्बन्धित शुल्क सम्मिलित नहीं है।</p>
+<p>15 नकदी व कीमती सामान की स्वयं जिम्मेदारी होगी।</p>
+<p>16 छात्र कोचिंग जाने से पूर्व कमरे की लाइट व पंखा बंद करें।</p>
+<p>17 विवाद होने पर पीजी प्रबंधक का निर्णय अंतिम होगा।</p>
+<p>18 प्रशासन आवश्यकता अनुसार नियम बदल सकता है।</p>
+
+<br><br>
+
+<div style="display:flex;justify-content:space-between">
+<div>छात्र के हस्ताक्षर</div>
+<div>हॉस्टल संचालक</div>
+</div>
+
+</div>
+
 <center>
 <button onclick="savePDF()">Download PDF</button>
 </center>
@@ -249,41 +277,57 @@ reader.readAsDataURL(event.target.files[0]);
 
 }
 
+
 function savePDF(){
 
 const { jsPDF } = window.jspdf;
 
 let form = document.getElementById("formArea");
 
+let terms = document.getElementById("termsPage");
+
 form.classList.add("pdf-mode");
 
-/* high quality render */
 
-html2canvas(form,{
-scale:4,
-useCORS:true,
-windowWidth:1200
-}).then(canvas => {
-
-const imgData = canvas.toDataURL("image/png");
+html2canvas(form,{scale:4}).then(canvas => {
 
 const pdf = new jsPDF('p','mm','a4');
 
+const imgData = canvas.toDataURL("image/png");
+
 pdf.addImage(imgData,'PNG',0,0,210,297);
 
-/* auto filename */
+
+/* PAGE 2 */
+
+terms.style.display="block";
+
+html2canvas(terms,{scale:4}).then(canvas2=>{
+
+const imgData2 = canvas2.toDataURL("image/png");
+
+pdf.addPage();
+
+pdf.addImage(imgData2,'PNG',0,0,210,297);
+
+
+/* filename */
 
 let studentName = document.getElementById("studentName").value;
 
-if(studentName.trim() === ""){
-studentName = "student_admission";
+if(studentName.trim()===""){
+studentName="student_admission";
 }
 
 studentName = studentName.replace(/\s+/g,"_");
 
-pdf.save(studentName + "_Admission.pdf");
+pdf.save(studentName+"_Admission.pdf");
+
+terms.style.display="none";
 
 form.classList.remove("pdf-mode");
+
+});
 
 });
 
