@@ -135,7 +135,7 @@ cursor:pointer;
 </div>
 
 <div class="photo-box">
-<input type="file" onchange="previewImage(event,'photoPreview')">
+<input type="file" accept="image/*" onchange="previewImage(event,'photoPreview')">
 <img id="photoPreview">
 </div>
 
@@ -200,13 +200,13 @@ cursor:pointer;
 <div class="aadhar-section">
 
 <div>
-<input type="file" onchange="previewImage(event,'aadharFront')">
+<input type="file" accept="image/*" onchange="previewImage(event,'aadharFront')">
 <img id="aadharFront">
 <p>Aadhar Front</p>
 </div>
 
 <div>
-<input type="file" onchange="previewImage(event,'aadharBack')">
+<input type="file" accept="image/*" onchange="previewImage(event,'aadharBack')">
 <img id="aadharBack">
 <p>Aadhar Back</p>
 </div>
@@ -257,8 +257,12 @@ let form = document.getElementById("formArea");
 
 form.classList.add("pdf-mode");
 
+/* high quality render */
+
 html2canvas(form,{
-scale:3
+scale:4,
+useCORS:true,
+windowWidth:1200
 }).then(canvas => {
 
 const imgData = canvas.toDataURL("image/png");
@@ -267,7 +271,7 @@ const pdf = new jsPDF('p','mm','a4');
 
 pdf.addImage(imgData,'PNG',0,0,210,297);
 
-/* auto filename from student name */
+/* auto filename */
 
 let studentName = document.getElementById("studentName").value;
 
